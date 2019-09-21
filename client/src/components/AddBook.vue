@@ -1,0 +1,49 @@
+<template>
+    <div>
+        <form @submit="sendRequest">
+            <label for="title">Title</label>
+            <input id="title" type="text" v-model="form.title" name="title">
+            <br>
+            <label for="author">Author</label>
+            <input id="author" v-model="form.author" type="text" name="author">
+            <br>
+            <label for="price">Price</label>
+            <input id="price" type="number" name="price" v-model="form.price" step=".01">
+            <br>
+            <hr>
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</template>
+
+<script>
+    import axios from 'axios';
+
+    export default {
+        name: "AddBook",
+        data() {
+          return {
+              form : {
+                  title: '',
+                  author: '',
+                  price: ''
+              }
+          }
+        },
+        methods : {
+            sendRequest(event) {
+                event.preventDefault();
+                axios
+                    .post("http://localhost:8000/api/books",this.form)
+                    .then(() => {
+                        this.$router.push('/')
+                    })
+
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

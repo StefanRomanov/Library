@@ -61,8 +61,7 @@ class BookRepository implements IBookRepository
     public function update(string $book_id, array $book_data)
     {
         $book = $this->book->find($book_id);
-        $data = $book_data->only($this->book->getFillable());
-        $book->fill($data)->save();
+        $book->fill($book_data)->save();
     }
 
     /**
