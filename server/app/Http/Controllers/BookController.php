@@ -1,12 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
+use App\Repositories\IBookRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
+
+    private $book;
+
+    /**
+     * BookController constructor.
+     * @param $bookRepository
+     */
+    public function __construct(IBookRepository $bookRepository)
+    {
+        $this->book = $bookRepository;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +27,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        return response($this->book->all(),200);
     }
 
     /**
