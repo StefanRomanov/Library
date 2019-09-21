@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
 
-    private $book;
+    private $bookRepository;
 
     /**
      * BookController constructor.
@@ -16,7 +16,7 @@ class BookController extends Controller
      */
     public function __construct(IBookRepository $bookRepository)
     {
-        $this->book = $bookRepository;
+        $this->bookRepository = $bookRepository;
     }
 
 
@@ -27,7 +27,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        return response($this->book->all(),200);
+        return response()->json($this->bookRepository->all(),200);
     }
 
     /**
@@ -38,7 +38,8 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->bookRepository->create($request->only($this->bookRepository->getFields()));
+        return redirect('/api/books');
     }
 
     /**
@@ -49,7 +50,13 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = $this->bookRepository->get($id);
+
+        if($book != null){
+            return response()->json($book);
+        } else {
+            return response()->json("Not found", 404);
+        }
     }
 
     /**
@@ -61,7 +68,8 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->bookRepository->update($id,$request->only($this->bookRepository->getFields()));
+        return response()->json("1 book updated", 204);
     }
 
     /**
@@ -72,6 +80,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->bookRepository->delete($id);
+        return response()->json("1 book deleted", 200);
     }
 }
