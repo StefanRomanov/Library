@@ -1,7 +1,6 @@
 <template>
     <div class="center">
         <search></search>
-
         <table  class="book-list">
             <tr>
                 <th>Title</th>
@@ -13,8 +12,6 @@
             <tr v-else-if="books.length === 0"><td colspan="4">No books found</td></tr>
             <BookCard  v-for="book in books" @delete="updateList" v-bind:key="book._id" v-bind:book="book"></BookCard>
         </table>
-        <hr>
-        <router-link to="/add" tag="button">Add</router-link>
     </div>
 </template>
 
