@@ -1,8 +1,8 @@
 <template>
     <div>
-        <form>
-            <input id="search" placeholder="Search by title and author" type="text"/>
-            <button v-on:click="search()">Search</button>
+        <form @submit="emit">
+            <input id="search" placeholder="Search by title or author" type="text" v-model="search" />
+            <button type="submit">Search</button>
         </form>
         <hr>
     </div>
@@ -12,9 +12,15 @@
 <script>
     export default {
         name: "Search",
+        data(){
+            return {
+                search: ''
+            }
+        },
         methods : {
-            search (){
-                alert("search")
+            emit (event){
+                event.preventDefault();
+                this.$emit('search',this.search);
             }
         }
     }

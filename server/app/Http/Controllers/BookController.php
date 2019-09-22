@@ -23,11 +23,12 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json($this->bookRepository->all(),200);
+        return response()->json($this->bookRepository->all($request->query('query')),200);
     }
 
     /**

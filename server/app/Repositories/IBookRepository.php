@@ -16,9 +16,10 @@ interface IBookRepository
     /**
      * Get all books.
      *
+     * @param $queryString
      * @return mixed
      */
-    public function all();
+    public function all($queryString);
 
     /**
      * Deletes a book

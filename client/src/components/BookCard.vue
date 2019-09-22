@@ -21,7 +21,7 @@
             deleteBook(id){
                 axios.delete("http://localhost:8000/api/books/" + id)
                     .then(() => {
-                        this.$emit('delete',this.book);
+                        this.$emit('delete');
                     })
             }
         }

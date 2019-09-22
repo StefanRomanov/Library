@@ -1,6 +1,6 @@
 <template>
     <div class="center">
-        <search></search>
+        <search  @search="updateSearch"></search>
         <table  class="book-list">
             <tr>
                 <th>Title</th>
@@ -10,7 +10,7 @@
             </tr>
             <tr v-if="loading" class="loading"><td colspan="4">Loading...</td></tr>
             <tr v-else-if="books.length === 0"><td colspan="4">No books found</td></tr>
-            <BookCard  v-for="book in books" @delete="updateList" v-bind:key="book._id" v-bind:book="book"></BookCard>
+            <BookCard  v-for="book in books" @delete="fetchData" v-bind:key="book._id" v-bind:book="book"></BookCard>
         </table>
     </div>
 </template>
@@ -26,7 +26,9 @@
             return {
                 loading: false,
                 books: null,
-                error: null
+                error: null,
+                search: '',
+                page: 1
             }
         },
         created() {
@@ -36,7 +38,7 @@
             fetchData() {
                 this.error = this.books = null;
                 this.loading = true;
-                axios.get("http://localhost:8000/api/books")
+                axios.get("http://localhost:8000/api/books?page=" + this.page + "&query=" + this.search)
                     .then(response => {
                         this.loading = false;
                         this.books = response.data.data;
@@ -45,14 +47,9 @@
                         this.error = error.toString();
                     })
             },
-            updateList(){
-                axios.get("http://localhost:8000/api/books")
-                    .then(response => {
-                        this.books = response.data.data;
-                    })
-                    .catch(error => {
-                        this.error = error.toString();
-                    })
+            updateSearch(searchString){
+                this.search = searchString;
+                this.fetchData();
             }
         },
         components: {BookCard, Search}
