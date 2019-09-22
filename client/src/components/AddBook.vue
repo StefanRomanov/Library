@@ -45,5 +45,11 @@
 </script>
 
 <style scoped>
-
+    div {
+        width: 50%;
+        margin: auto;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
 </style>

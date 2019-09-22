@@ -39,7 +39,6 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $this->bookRepository->create($request->only($this->bookRepository->getFields()));
-        return redirect('/api/books');
     }
 
     /**

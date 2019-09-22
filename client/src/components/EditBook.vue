@@ -11,7 +11,7 @@
             <input id="price" type="number" name="price" v-model="form.price" step=".01">
             <br>
             <hr>
-            <button type="submit">Create</button>
+            <input type="submit" value="Submit">
         </form>
     </div>
 </template>
@@ -41,10 +41,6 @@
                 axios.get("http://localhost:8000/api/books/" + this.id)
                     .then(response => {
                         this.form = {...response.data}
-                        console.log(this.form);
-                    })
-                    .catch(error => {
-                        console.log(error);
                     })
             },
             updateBook(event) {
@@ -53,12 +49,18 @@
                     .put("http://localhost:8000/api/books/" + this.id ,this.form)
                     .then(() => {
                         this.$router.push('/')
-                    })
+                    });
             }
         }
     }
 </script>
 
 <style scoped>
-
+    div {
+        width: 50%;
+        margin: auto;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
 </style>
