@@ -8,6 +8,14 @@ class Book extends Eloquent
 {
     protected $fillable = ['title', 'author', 'price'];
 
+    public function getPriceAttribute($value){
+        return doubleval($value);
+    }
+
+    public function setPriceAttribute($value){
+        $this->attributes['price'] = doubleval($value);
+    }
+
     /**
      * @param $query
      * @param $searchString
@@ -16,6 +24,7 @@ class Book extends Eloquent
      */
     public function scopeSearch($query, $searchString, $order)
     {
+
         if($searchString == null || $searchString == ''){
             return $query->orderBy($order);
         }

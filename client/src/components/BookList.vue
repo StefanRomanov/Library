@@ -2,10 +2,13 @@
     <div class="center">
         <search  @search="updateSearch"></search>
         <div class="order">
-            Order by:
-            <button v-on:click="setOrder('title')">Title</button>
-            <button v-on:click="setOrder('author')">Author</button>
-            <button v-on:click="setOrder('price')">Price</button>
+            <strong>Order by:</strong>
+            <select v-on:change="setOrder($event)">
+                <option value="author">Author</option>
+                <option value="title">Title</option>
+                <option value="price">Price (low to high)</option>
+                <option value="priceDesc">Price (high to low)</option>
+            </select>
         </div>
         <table  class="book-list">
             <tr>
@@ -73,8 +76,8 @@
                 this.page -= 1;
                 this.fetchData();
             },
-            setOrder($value){
-                this.order = $value;
+            setOrder(event){
+                this.order = event.target.value;
                 this.fetchData();
             }
         },
@@ -124,8 +127,15 @@
         border-right: none;
     }
     .order{
-        margin: auto;
+        display: inline-block;
+        margin-left: 0;
+        margin-right: 40%;
         padding: 10px;
+    }
+    .order select {
+        width: 60%;
+        padding: 5px 5px;
+        margin-left: 10px;
     }
 
     .book-list{

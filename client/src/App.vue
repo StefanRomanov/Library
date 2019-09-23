@@ -37,7 +37,7 @@ button {
     cursor: pointer;
 }
 
-input[type=text], [type=number] {
+input[type=text], [type=number], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
