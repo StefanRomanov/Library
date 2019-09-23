@@ -16,6 +16,10 @@ class Book extends Eloquent
         $this->attributes['price'] = doubleval($value);
     }
 
+    protected $casts = [
+        'price' => 'double'
+    ];
+
     /**
      * @param $query
      * @param $searchString
