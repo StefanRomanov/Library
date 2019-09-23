@@ -11,16 +11,18 @@ class Book extends Eloquent
     /**
      * @param $query
      * @param $searchString
+     * @param $order
      * @return mixed
      */
-    public function scopeSearch($query, $searchString)
+    public function scopeSearch($query, $searchString, $order)
     {
         if($searchString == null || $searchString == ''){
-            return $query;
+            return $query->orderBy($order);
         }
 
         return $query
             ->where('title', 'LIKE', '%' . $searchString . '%')
-            ->orWhere('author', 'LIKE', '%' . $searchString . '%');
+            ->orWhere('author', 'LIKE', '%' . $searchString . '%')
+            ->orderBy($order);
     }
 }

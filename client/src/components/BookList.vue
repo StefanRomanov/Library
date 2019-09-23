@@ -1,6 +1,12 @@
 <template>
     <div class="center">
         <search  @search="updateSearch"></search>
+        <div class="order">
+            Order by:
+            <button v-on:click="setOrder('title')">Title</button>
+            <button v-on:click="setOrder('author')">Author</button>
+            <button v-on:click="setOrder('price')">Price</button>
+        </div>
         <table  class="book-list">
             <tr>
                 <th>Title</th>
@@ -12,6 +18,7 @@
             <tr v-else-if="books.length === 0"><td colspan="4">No books found</td></tr>
             <BookCard  v-for="book in books" @delete="fetchData" v-bind:key="book._id" v-bind:book="book"></BookCard>
         </table>
+        <paginator @nextPage="nextPage" @prevPage="prevPage" v-bind:current-page="page" v-bind:max-pages="maxPages"></paginator>
     </div>
 </template>
 
@@ -19,16 +26,19 @@
     import Search from "./Search";
     import axios from "axios";
     import BookCard from "./BookCard";
+    import Paginator from "./Paginator";
 
     export default {
         name: "BookList",
         data() {
             return {
                 loading: false,
+                order: 'author',
                 books: null,
                 error: null,
                 search: '',
-                page: 1
+                page: 1,
+                maxPages: 1,
             }
         },
         created() {
@@ -38,10 +48,14 @@
             fetchData() {
                 this.error = this.books = null;
                 this.loading = true;
-                axios.get("http://localhost:8000/api/books?page=" + this.page + "&query=" + this.search)
+                axios.get("http://localhost:8000/api/books?page=" + this.page +
+                    "&query=" + this.search +
+                    "&order=" + this.order)
                     .then(response => {
                         this.loading = false;
                         this.books = response.data.data;
+                        this.page = response.data.current_page;
+                        this.maxPages = response.data.last_page;
                     })
                     .catch(error => {
                         this.error = error.toString();
@@ -50,9 +64,21 @@
             updateSearch(searchString){
                 this.search = searchString;
                 this.fetchData();
+            },
+            nextPage(){
+                this.page += 1;
+                this.fetchData();
+            },
+            prevPage(){
+                this.page -= 1;
+                this.fetchData();
+            },
+            setOrder($value){
+                this.order = $value;
+                this.fetchData();
             }
         },
-        components: {BookCard, Search}
+        components: {Paginator, BookCard, Search}
     }
 </script>
 
@@ -96,6 +122,10 @@
 
     table th:last-child {
         border-right: none;
+    }
+    .order{
+        margin: auto;
+        padding: 10px;
     }
 
     .book-list{

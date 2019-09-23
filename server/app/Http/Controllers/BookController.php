@@ -28,7 +28,9 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json($this->bookRepository->all($request->query('query')),200);
+        return response()
+            ->json($this->bookRepository
+                ->all($request->query('query'),$request->query('order')),200);
     }
 
     /**

@@ -4,8 +4,8 @@
         <td>{{book.author}}</td>
         <td>${{book.price}}</td>
         <td class="actions">
-            <router-link :to="'edit/' + book._id" tag="button">Edit</router-link>
-            <button v-on:click="deleteBook(book._id)">Delete</button>
+            <router-link :to="'edit/' + book._id" tag="button"><span>Edit</span></router-link>
+            <button v-on:click="deleteBook(book._id)"><span>Delete</span></button>
         </td>
     </tr>
 </template>

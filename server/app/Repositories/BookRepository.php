@@ -36,11 +36,12 @@ class BookRepository implements IBookRepository
      * Get all books.
      *
      * @param $queryString
+     * @param $order
      * @return mixed
      */
-    public function all($queryString)
+    public function all($queryString, $order)
     {
-        return $this->book->search($queryString)->paginate(20);
+        return $this->book->search($queryString, $order)->paginate(20);
     }
 
     /**
