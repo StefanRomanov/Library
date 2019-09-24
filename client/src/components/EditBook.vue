@@ -41,7 +41,7 @@
             fetchData() {
                 BookService.getOneBook(this.id)
                     .then(response => {
-                        this.form = {...response.data}
+                        this.form = {...response.data.data}
                     })
                     .catch(error => {
                         this.$toasted.error(error,config.TOASTED_OPTIONS)

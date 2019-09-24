@@ -6,6 +6,7 @@ use App\Http\Requests\BookRequest;
 use App\Repositories\IBookRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Resources\Book as BookResource;
 
 class BookController extends Controller
 {
@@ -51,14 +52,14 @@ class BookController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return BookResource
      */
     public function show($id)
     {
         $book = $this->bookRepository->get($id);
 
         if($book != null){
-            return response()->json($book);
+            return new BookResource($book);
         } else {
             return response()->json("Not found", 404);
         }

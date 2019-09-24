@@ -4,8 +4,8 @@
         <div class="order">
             <strong>Order by:</strong>
             <select v-on:change="setOrder($event)">
-                <option value="author">Author</option>
                 <option value="title">Title</option>
+                <option value="author">Author</option>
                 <option value="price">Price (low to high)</option>
                 <option value="priceDesc">Price (high to low)</option>
             </select>
@@ -37,7 +37,7 @@
         data() {
             return {
                 loading: false,
-                order: 'author',
+                order: 'title',
                 books: null,
                 search: '',
                 page: 1,
