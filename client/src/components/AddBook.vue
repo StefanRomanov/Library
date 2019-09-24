@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit="sendRequest">
+        <form @submit="validateForm">
             <label for="title">Title</label>
             <input id="title" type="text" v-model="form.title" name="title">
             <br>
@@ -27,17 +27,45 @@
                   title: '',
                   author: '',
                   price: ''
-              }
+              },
+              errors: [],
           }
         },
         methods : {
-            sendRequest(event) {
-                event.preventDefault();
+            sendRequest() {
                 axios
                     .post("http://localhost:8000/api/books",this.form)
                     .then(() => {
                         this.$router.push('/')
                     })
+
+            },
+
+            validateForm(event){
+                event.preventDefault();
+                if(!this.form.title || !this.form.author || !this.form.price){
+                    this.errors.push('All fields required.');
+                }
+                if(this.form.title.length > 30 || this.form.title.length < 1){
+                    this.errors.push('Title should be between 1 and 30 characters long.')
+                }
+                if(this.form.author.length > 30 || this.form.author.length < 2){
+                    this.errors.push('Author should be between 2 and 30 characters long.')
+                }
+                if(this.form.price < 0.01){
+                    this.errors.push('Price should be higher than 0.')
+                }
+
+
+                if(this.errors.length === 0){
+                    this.sendRequest();
+                } else {
+                    for (const err of this.errors) {
+                        this.$toasted.error(err, {position: "top-right", duration: 3000, theme: "bubble", closeOnSwipe: true });
+                    }
+                    this.errors = [];
+                }
+
 
             }
         }

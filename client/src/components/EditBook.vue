@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit="updateBook">
+        <form @submit="validateForm">
             <label for="title">Title</label>
             <input id="title" type="text" v-model="form.title" name="title">
             <br>
@@ -25,11 +25,11 @@
             return {
                 id: '',
                 form : {
-                    _id: '',
                     title: '',
                     author: '',
                     price: ''
-                }
+                },
+                errors : []
             }
         },
         created() {
@@ -43,13 +43,39 @@
                         this.form = {...response.data}
                     })
             },
-            updateBook(event) {
-                event.preventDefault();
+            updateBook() {
                 axios
                     .put("http://localhost:8000/api/books/" + this.id ,this.form)
                     .then(() => {
                         this.$router.push('/')
                     });
+            },
+            validateForm(event){
+                if(!this.form.title || !this.form.author || !this.form.price){
+                    this.errors.push('All fields required.');
+                } else {
+                    if(this.form.title.length > 30 || this.form.title.length < 1){
+                        this.errors.push('Title should be between 1 and 30 characters long.')
+                    }
+                    if(this.form.author.length > 30 || this.form.author.length < 2){
+                        this.errors.push('Author should be between 2 and 30 characters long.')
+                    }
+                    if(this.form.price < 0.01){
+                        this.errors.push('Price should be higher than 0.')
+                    }
+                }
+
+
+                if(this.errors.length === 0){
+                    this.updateBook();
+                } else {
+                    for (const err of this.errors) {
+                        this.$toastr.error(err);
+                    }
+                    this.errors = [];
+                }
+
+                event.preventDefault();
             }
         }
     }
