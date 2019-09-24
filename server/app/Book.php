@@ -28,14 +28,20 @@ class Book extends Eloquent
      */
     public function scopeSearch($query, $searchString, $order)
     {
+        $orderOption = 'Asc';
+
+        if($order =='priceDesc'){
+            $order = 'price';
+            $orderOption = 'Desc';
+        }
 
         if($searchString == null || $searchString == ''){
-            return $query->orderBy($order);
+            return $query->orderBy($order, $orderOption);
         }
 
         return $query
             ->where('title', 'LIKE', '%' . $searchString . '%')
             ->orWhere('author', 'LIKE', '%' . $searchString . '%')
-            ->orderBy($order);
+            ->orderBy($order, $orderOption);
     }
 }

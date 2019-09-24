@@ -11,7 +11,8 @@
 </template>
 
 <script>
-    import axios from "axios";
+    import BookService from '../services/BookService'
+    import config from '../util/config'
 
     export default {
         name: "BookCard",
@@ -19,9 +20,12 @@
         components: {},
         methods : {
             deleteBook(id){
-                axios.delete("http://localhost:8000/api/books/" + id)
+                BookService.deleteBook(id)
                     .then(() => {
                         this.$emit('delete');
+                    })
+                    .catch(error => {
+                        this.$toasted.error(error, config.TOASTED_OPTIONS);
                     })
             }
         }

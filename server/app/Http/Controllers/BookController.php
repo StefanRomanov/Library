@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
 use App\Repositories\IBookRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
@@ -24,7 +26,7 @@ class BookController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -36,19 +38,20 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param BookRequest $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         $this->bookRepository->create($request->only($this->bookRepository->getFields()));
+        return response()->json('Book created', 201);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -64,11 +67,11 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param BookRequest $request
+     * @param int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, $id)
     {
         $this->bookRepository->update($id,$request->only($this->bookRepository->getFields()));
         return response()->json("1 book updated", 204);
@@ -78,11 +81,11 @@ class BookController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
         $this->bookRepository->delete($id);
-        return response()->json("1 book deleted", 200);
+        return response()->json("1 book deleted", 204);
     }
 }

@@ -12,8 +12,24 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testValidCreate()
     {
-        $this->assertTrue(true);
+        $response = $this->json('POST', 'api/books', ['author' => 'Sally', 'title' => 'A', 'price' => '12.33']);
+        $response
+            ->assertStatus(201);
+    }
+
+    public function testInvalidCreate()
+    {
+        $response = $this->json('POST', 'api/books', ['author' => 'S', 'title' => 'A', 'price' => '12.33']);
+        $response
+            ->assertStatus(422);
+    }
+
+    public function testValidEdit()
+    {
+        $response = $this->json('POST', 'api/books', ['author' => 'S', 'title' => 'A', 'price' => '12.33']);
+        $response
+            ->assertStatus(422);
     }
 }

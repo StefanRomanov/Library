@@ -17,7 +17,8 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import BookService from '../services/BookService'
+    import config from '../util/config'
 
     export default {
         name: "AddBook",
@@ -33,12 +34,13 @@
         },
         methods : {
             sendRequest() {
-                axios
-                    .post("http://localhost:8000/api/books",this.form)
+                BookService.createBook(this.form)
                     .then(() => {
                         this.$router.push('/')
                     })
-
+                    .catch(error => {
+                        this.$toasted.error(error,config.TOASTED_OPTIONS)
+                    })
             },
 
             validateForm(event){
@@ -61,7 +63,7 @@
                     this.sendRequest();
                 } else {
                     for (const err of this.errors) {
-                        this.$toasted.error(err, {position: "top-right", duration: 3000, theme: "bubble", closeOnSwipe: true });
+                        this.$toasted.error(err, config.TOASTED_OPTIONS);
                     }
                     this.errors = [];
                 }

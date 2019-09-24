@@ -17,7 +17,8 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import BookService from '../services/BookService'
+    import config from '../util/config'
 
     export default {
         name: "EditBook",
@@ -38,19 +39,22 @@
         },
         methods: {
             fetchData() {
-                axios.get("http://localhost:8000/api/books/" + this.id)
+                BookService.getOneBook(this.id)
                     .then(response => {
                         this.form = {...response.data}
                     })
+                    .catch(error => {
+                        this.$toasted.error(error,config.TOASTED_OPTIONS)
+                    })
             },
             updateBook() {
-                axios
-                    .put("http://localhost:8000/api/books/" + this.id ,this.form)
+                BookService.updateBook(this.id,this.form)
                     .then(() => {
                         this.$router.push('/')
                     });
             },
             validateForm(event){
+                event.preventDefault();
                 if(!this.form.title || !this.form.author || !this.form.price){
                     this.errors.push('All fields required.');
                 } else {
@@ -65,17 +69,14 @@
                     }
                 }
 
-
                 if(this.errors.length === 0){
                     this.updateBook();
                 } else {
                     for (const err of this.errors) {
-                        this.$toastr.error(err);
+                        this.$toasted.error(err, config.TOASTED_OPTIONS);
                     }
                     this.errors = [];
                 }
-
-                event.preventDefault();
             }
         }
     }

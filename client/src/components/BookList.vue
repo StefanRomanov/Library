@@ -27,7 +27,8 @@
 
 <script>
     import Search from "./Search";
-    import axios from "axios";
+    import BookService from '../services/BookService'
+    import config from '../util/config'
     import BookCard from "./BookCard";
     import Paginator from "./Paginator";
 
@@ -38,7 +39,6 @@
                 loading: false,
                 order: 'author',
                 books: null,
-                error: null,
                 search: '',
                 page: 1,
                 maxPages: 1,
@@ -49,11 +49,9 @@
         },
         methods: {
             fetchData() {
-                this.error = this.books = null;
+                this.books = null;
                 this.loading = true;
-                axios.get("http://localhost:8000/api/books?page=" + this.page +
-                    "&query=" + this.search +
-                    "&order=" + this.order)
+                BookService.getAllBooks(this.page,this.search, this.order)
                     .then(response => {
                         this.loading = false;
                         this.books = response.data.data;
@@ -61,11 +59,12 @@
                         this.maxPages = response.data.last_page;
                     })
                     .catch(error => {
-                        this.error = error.toString();
+                        this.$toasted.error(error, config.TOASTED_OPTIONS);
                     })
             },
             updateSearch(searchString){
                 this.search = searchString;
+                this.page = 1;
                 this.fetchData();
             },
             nextPage(){
