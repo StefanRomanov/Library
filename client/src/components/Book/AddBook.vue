@@ -17,8 +17,8 @@
 </template>
 
 <script>
-    import BookService from '../services/BookService'
-    import config from '../util/config'
+    import BookService from '../../services/BookService'
+    import config from '../../util/config'
 
     export default {
         name: "AddBook",

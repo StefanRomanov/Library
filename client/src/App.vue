@@ -7,7 +7,7 @@
 
 <script>
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Common/Navbar";
 export default {
   name: 'app',
   components: {
@@ -24,7 +24,6 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 button {
     margin-left: 3px;
     background: cornflowerblue;

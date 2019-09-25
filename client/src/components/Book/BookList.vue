@@ -17,7 +17,7 @@
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
-            <tr v-if="loading" class="loading"><td colspan="4">Loading...</td></tr>
+            <tr v-if="loading" class="loading"><td colspan="4"><strong>Loading...</strong></td></tr>
             <tr v-else-if="books.length === 0"><td colspan="4">No books found</td></tr>
             <BookCard  v-for="book in books" @delete="fetchData" v-bind:key="book._id" v-bind:book="book"></BookCard>
         </table>
@@ -26,11 +26,11 @@
 </template>
 
 <script>
-    import Search from "./Search";
-    import BookService from '../services/BookService'
-    import config from '../util/config'
+    import Search from "../Common/Search";
+    import BookService from '../../services/BookService'
+    import config from '../../util/config'
     import BookCard from "./BookCard";
-    import Paginator from "./Paginator";
+    import Paginator from "../Common/Paginator";
 
     export default {
         name: "BookList",
@@ -77,6 +77,7 @@
             },
             setOrder(event){
                 this.order = event.target.value;
+                this.page = 1;
                 this.fetchData();
             }
         },

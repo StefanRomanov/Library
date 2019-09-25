@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router';
-import BookList from "./components/BookList";
-import AddBook from "./components/AddBook";
-import EditBook from "./components/EditBook";
+import BookList from "./components/Book/BookList";
+import AddBook from "./components/Book/AddBook";
+import EditBook from "./components/Book/EditBook";
 import Toasted from 'vue-toasted'
+import NotFound from "./components/Common/NotFound";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -16,9 +17,12 @@ const router = new VueRouter({
     routes: [
         {path: '/', component: BookList},
         {path: '/add', component: AddBook},
-        {path: '/edit/:id', component: EditBook}
+        {path: '/edit/:id', component: EditBook},
+        {path: '*', component: NotFound}
     ]}
 );
+
+Vue.filter();
 
 new Vue({
     router,

@@ -75,8 +75,12 @@ class BookController extends Controller
      */
     public function update(BookRequest $request, $id)
     {
-        $this->bookRepository->update($id,$request->only($this->bookRepository->getFields()));
-        return response()->json("1 book updated", JsonResponse::HTTP_NO_CONTENT);
+        if($this->bookRepository->update($id,$request->only($this->bookRepository->getFields()))){
+            return response()->json("1 book updated", JsonResponse::HTTP_NO_CONTENT);
+        }else {
+            return response()->json("Book not found", JsonResponse::HTTP_NOT_FOUND);
+        }
+
     }
 
     /**
@@ -87,7 +91,11 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $this->bookRepository->delete($id);
-        return response()->json("1 book deleted", JsonResponse::HTTP_NO_CONTENT);
+        if($this->bookRepository->delete($id)){
+            return response()->json("1 book deleted", JsonResponse::HTTP_NO_CONTENT);
+        } else {
+            return response()->json("Book not found", JsonResponse::HTTP_NOT_FOUND);
+        }
+
     }
 }

@@ -50,10 +50,17 @@ class BookRepository implements IBookRepository
      * Deletes a book
      *
      * @param string $book_id
+     * @return bool
      */
     public function delete(string $book_id)
     {
-        $this->book->find($book_id)->delete();
+        $book = $this->book->find($book_id);
+        if ($book == null){
+            return false;
+        } else {
+            $book->delete();
+            return true;
+        }
     }
 
     /**
@@ -61,11 +68,17 @@ class BookRepository implements IBookRepository
      *
      * @param string $book_id
      * @param array $book_data
+     * @return bool
      */
     public function update(string $book_id, array $book_data)
     {
         $book = $this->book->find($book_id);
-        $book->fill($book_data)->save();
+        if ($book == null){
+            return false;
+        } else {
+            $book->fill($book_data)->save();
+            return true;
+        }
     }
 
     /**

@@ -22,7 +22,8 @@ class BookControllerTests extends TestCase
 
         $this->mockedRepository->shouldReceive('getFields')->andReturn(['author', 'title', 'price']);
         $this->mockedRepository->shouldReceive('create')->andReturn(null);
-        $this->mockedRepository->shouldReceive('update')->andReturn(null);
+        $this->mockedRepository->shouldReceive('update')->andReturn(true);
+        $this->mockedRepository->shouldReceive('delete')->andReturn(true);
         $this->mockedRepository->shouldReceive('get')->andReturn(new BookResource($this->book));
         $this->mockedRepository->shouldReceive('all')->andReturn([$this->book, $this->book, $this->book]);
     }
@@ -48,6 +49,24 @@ class BookControllerTests extends TestCase
         $mocked = AppHelper::mock(IBookRepository::class);
         $mocked->shouldReceive('get')->andReturn(null);
         $response = $this->json('GET', 'api/books/id');
+        $response
+            ->assertStatus(404);
+
+    }
+
+    public function testDelete()
+    {
+        $response = $this->json('DELETE', 'api/books/id');
+        $response
+            ->assertStatus(204);
+
+    }
+
+    public function testDeleteNotFound()
+    {
+        $mocked = AppHelper::mock(IBookRepository::class);
+        $mocked->shouldReceive('delete')->andReturn(false);
+        $response = $this->json('DELETE', 'api/books/id');
         $response
             ->assertStatus(404);
 
@@ -107,5 +126,17 @@ class BookControllerTests extends TestCase
         $response = $this->json('PUT', 'api/books/id', ['author' => 'Sa', 'title' => '', 'price' => '']);
         $response
             ->assertStatus(422);
+    }
+
+    public function testUpdateNotFound()
+    {
+        $mocked = AppHelper::mock(IBookRepository::class);
+        $mocked->shouldReceive('update')->andReturn(false);
+        $mocked->shouldReceive('getFields')->andReturn(['author', 'title', 'price']);
+
+        $response = $this->json('PUT', 'api/books/id', ['author' => 'Sally', 'title' => 'A', 'price' => '12.33']);
+        $response
+            ->assertStatus(404);
+
     }
 }
