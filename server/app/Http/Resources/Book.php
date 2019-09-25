@@ -20,18 +20,6 @@ class Book extends JsonResource
             'title' => $this->title,
             'author' => $this->author,
             'price' => $this->price,
-            '_links' => [
-                [
-                    'rel' => 'self',
-                    'type' => 'GET',
-                    'href' => URL::to('/').'/api/books/'.$this->_id
-                ],
-                [
-                    'rel' => 'delete',
-                    'type' => 'DELETE',
-                    'href' => URL::to('/').'/api/books/'.$this->_id
-                ]
-            ]
         ];
     }
 }

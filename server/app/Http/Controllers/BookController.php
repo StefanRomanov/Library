@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
 use App\Repositories\IBookRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\Book as BookResource;
@@ -33,7 +34,7 @@ class BookController extends Controller
     {
         return response()
             ->json($this->bookRepository
-                ->all($request->query('query'),$request->query('order')),200);
+                ->all($request->query('query'),$request->query('order')),JsonResponse::HTTP_OK);
     }
 
     /**
@@ -45,7 +46,7 @@ class BookController extends Controller
     public function store(BookRequest $request)
     {
         $this->bookRepository->create($request->only($this->bookRepository->getFields()));
-        return response()->json('Book created', 201);
+        return response()->json('Book created', JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -61,7 +62,7 @@ class BookController extends Controller
         if($book != null){
             return new BookResource($book);
         } else {
-            return response()->json("Not found", 404);
+            return response()->json("Not found", JsonResponse::HTTP_NOT_FOUND);
         }
     }
 
@@ -75,7 +76,7 @@ class BookController extends Controller
     public function update(BookRequest $request, $id)
     {
         $this->bookRepository->update($id,$request->only($this->bookRepository->getFields()));
-        return response()->json("1 book updated", 204);
+        return response()->json("1 book updated", JsonResponse::HTTP_NO_CONTENT);
     }
 
     /**
@@ -87,6 +88,6 @@ class BookController extends Controller
     public function destroy($id)
     {
         $this->bookRepository->delete($id);
-        return response()->json("1 book deleted", 204);
+        return response()->json("1 book deleted", JsonResponse::HTTP_NO_CONTENT);
     }
 }

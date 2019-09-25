@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Book;
+use App\Helpers\Constants;
 
 class BookRepository implements IBookRepository
 {
@@ -41,7 +42,8 @@ class BookRepository implements IBookRepository
      */
     public function all($queryString, $order)
     {
-        return $this->book->search($queryString, $order)->paginate(20);
+        $result = $this->book->search($queryString, $order);
+        return $result->paginate(Constants::PAGE_SIZE);
     }
 
     /**
